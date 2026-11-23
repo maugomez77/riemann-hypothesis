@@ -200,7 +200,11 @@ theorem BlockImageGenDeg.proof (hMHP : MultigradedHilbertPolynomial.Statement.{0
 
   apply Int.cast_injective (α := ℚ)
   unfold genDeg GroundTheory.Heights₂.Heights.NumbersDVR.intNum
-  convert key using 6 <;> rfl
+  have hunit : unitDeg k₀ = ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.unitDeg k₀ := by
+    funext k
+    simp [unitDeg, ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.unitDeg, Pi.single_apply]
+  rw [hunit]
+  convert key using 6
 
 end
 
