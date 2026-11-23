@@ -342,7 +342,16 @@ theorem lift_chartIdx (y : d.R.X) :
 theorem locDens_eq_chernTopDens (A' : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι) (hA' : A'.a = ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.unitDeg d.k₀) (hs : ReciprocityTheory.ChartRestriction.G.Geo.IsSmoothHerm A') (t : ℝ)
     (j : Fin r) {y : Fin D → ℂ} (hy : y ∈ ((atlas d pt hcov).chart j).target) :
     locDens (atlas d pt hcov) (fun _ => blockInterpPot d d.A A' t) j y =
-      chernTopDens ((GroundTheory.Heights₂.Heights.HilbertSamuel.BlockResolutionMetricPair.weight d pt hcov d.A d.deg d.semipos.1).lerp (GroundTheory.Heights₂.Heights.HilbertSamuel.BlockResolutionMetricPair.weight d pt hcov A' hA' hs) t) j y := by
+      chernTopDens ((GroundTheory.Heights₂.Heights.HilbertSamuel.BlockResolutionMetricPair.weight d pt hcov d.A (by
+      have hunit : unitDeg d.k₀ = ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.unitDeg d.k₀ := by
+        funext k
+        simp [unitDeg, ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.unitDeg, Pi.single_apply]
+      simpa [hunit] using d.deg) d.semipos.1).lerp (GroundTheory.Heights₂.Heights.HilbertSamuel.BlockResolutionMetricPair.weight d pt hcov A' hA' hs) t) j y := by
+  have hunit : unitDeg d.k₀ = ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.unitDeg d.k₀ := by
+    funext k
+    simp [unitDeg, ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.unitDeg, Pi.single_apply]
+  have hdeg : d.A.a = ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.unitDeg d.k₀ := by
+    simpa [hunit] using d.deg
   obtain ⟨hy1, hyU⟩ := mem_atlas_target d pt hcov hy
   have hΦ : ∀ _ : Fin D, IsPotential d.R.A (blockInterpPot d d.A A' t) :=
     fun _ => isPotential_blockInterpPot d hs t
@@ -353,7 +362,7 @@ theorem locDens_eq_chernTopDens (A' : ReciprocityTheory.ChartRestriction.G.Geo.H
       t * Real.log (A'.h (d.R.lift (pt j) (((atlas d pt hcov).chart j).symm y'))) with hψ
   have hL : locDens (atlas d pt hcov) (fun _ => blockInterpPot d d.A A' t) j y = maDens (fun _ => ψ) y :=
     hbase
-  have hgerm : ((GroundTheory.Heights₂.Heights.HilbertSamuel.BlockResolutionMetricPair.weight d pt hcov d.A d.deg d.semipos.1).lerp (GroundTheory.Heights₂.Heights.HilbertSamuel.BlockResolutionMetricPair.weight d pt hcov A' hA' hs) t).φ j ∘
+  have hgerm : ((GroundTheory.Heights₂.Heights.HilbertSamuel.BlockResolutionMetricPair.weight d pt hcov d.A hdeg d.semipos.1).lerp (GroundTheory.Heights₂.Heights.HilbertSamuel.BlockResolutionMetricPair.weight d pt hcov A' hA' hs) t).φ j ∘
       ((atlas d pt hcov).chart j).symm =ᶠ[𝓝 y] fun y' => 2 * ψ y' := by
     refine Filter.Eventually.of_forall fun y' => ?_
     simp only [Function.comp_apply, Weight.lerp, GroundTheory.Heights₂.Heights.HilbertSamuel.BlockResolutionMetricPair.weight, hψ]
@@ -391,9 +400,14 @@ theorem BlockResolutionMetricPair.proof (h : BergmanDensChartSum.Statement) : Bl
     have h := hsp'
     unfold IsSemipositiveRel at h
     exact h.1
-  refine ⟨atlas d pt hcov, bundle d pt hcov, weight d pt hcov d.A d.deg hsm,
+  have hunit : unitDeg d.k₀ = ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.unitDeg d.k₀ := by
+    funext k
+    simp [unitDeg, ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.unitDeg, Pi.single_apply]
+  have hdeg : d.A.a = ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.unitDeg d.k₀ := by
+    simpa [hunit] using d.deg
+  refine ⟨atlas d pt hcov, bundle d pt hcov, weight d pt hcov d.A hdeg hsm,
     weight d pt hcov A' hA' hsm', smoothVol d pt hcov, fun _ b => sec d pt hcov b, refine_compatible _ _ _ _ _,
-    weight_isSemipositive d pt hcov d.A d.deg d.P0 d.normalForm_baseLattice_le_dualSpan_sup_line d.semipos,
+    weight_isSemipositive d pt hcov d.A hdeg d.P0 d.normalForm_baseLattice_le_dualSpan_sup_line d.semipos,
     weight_isSemipositive d pt hcov A' hA' P0' hP0' hsp', rfl, fun n b hb => sec_mem d pt hcov hb,
     fun y => ?_, fun s _ g hg => ?_⟩
   · obtain ⟨c, hc, hz⟩ := lift_chartIdx d pt hcov y
