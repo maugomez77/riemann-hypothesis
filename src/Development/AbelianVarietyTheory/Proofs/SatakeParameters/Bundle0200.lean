@@ -266,7 +266,7 @@ theorem mulB_mulV (c : ↥(MaximalUnramifiedExtension l)) (y : (Fin 1 → ↥L.1
   | add y y' hy hy' => simp only [map_add (f := _), LinearMap.add_apply, smul_add, hy, hy'] <;> abel
 
 theorem mulV_mulB (c : ↥(MaximalUnramifiedExtension l)) (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) (x : V ⊗[ℚ_[l]] Bst P) :
-    mulB P V (mulV P ↥L.1 (Fin 1 → ↥L.1) c y) x = mulV P ↥L.1 V c (mulB P V y x) := by
+    mulB (L := L) P V (mulV P ↥L.1 (Fin 1 → ↥L.1) c y) x = mulV P ↥L.1 V c (mulB (L := L) P V y x) := by
   induction y using TensorProduct.induction_on with
   | zero => simp
   | tmul v' b' =>
@@ -278,7 +278,7 @@ theorem mulV_mulB (c : ↥(MaximalUnramifiedExtension l)) (y : (Fin 1 → ↥L.1
   | add y y' hy hy' => simp only [map_add (f := _), LinearMap.add_apply, smul_add, hy, hy'] <;> abel
 
 theorem phiV_mulB (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) (x : V ⊗[ℚ_[l]] Bst P) :
-    phiV P ↥L.1 V (mulB P V y x) = mulB P V (phiV P ↥L.1 (Fin 1 → ↥L.1) y) (phiV P ↥L.1 V x) := by
+    phiV P ↥L.1 V (mulB (L := L) P V y x) = mulB (L := L) P V (phiV P ↥L.1 (Fin 1 → ↥L.1) y) (phiV P ↥L.1 V x) := by
   induction y using TensorProduct.induction_on with
   | zero => simp
   | tmul v' b' =>
@@ -290,8 +290,8 @@ theorem phiV_mulB (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) (x : V ⊗[ℚ_[l]
   | add y y' hy hy' => simp only [map_add (f := _), LinearMap.add_apply, smul_add, hy, hy'] <;> abel
 
 theorem monV_mulB (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) (x : V ⊗[ℚ_[l]] Bst P) :
-    monV P ↥L.1 V (mulB P V y x) = mulB P V (monV P ↥L.1 (Fin 1 → ↥L.1) y) x +
-      mulB P V y (monV P ↥L.1 V x) := by
+    monV P ↥L.1 V (mulB (L := L) P V y x) = mulB (L := L) P V (monV P ↥L.1 (Fin 1 → ↥L.1) y) x +
+      mulB (L := L) P V y (monV P ↥L.1 V x) := by
   induction y using TensorProduct.induction_on with
   | zero => simp
   | tmul v' b' =>
@@ -310,7 +310,7 @@ variable {K : FinExt l} (ρs ρt : Representation ↥L.1 ↥(GK K) V)
 
 theorem stRep_mulB (hm : ∀ g v, ρm g v = χ g • v) (ht : ∀ g v, ρt g v = χ g • ρs g v) (g : ↥(GK K))
     (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) (x : V ⊗[ℚ_[l]] Bst P) :
-    stRep P ρt g (mulB P V y x) = mulB P V (stRep P ρm g y) (stRep P ρs g x) := by
+    stRep P ρt g (mulB (L := L) P V y x) = mulB (L := L) P V (stRep P ρm g y) (stRep P ρs g x) := by
   induction y using TensorProduct.induction_on with
   | zero => simp
   | tmul v' b' =>
@@ -324,7 +324,7 @@ theorem stRep_mulB (hm : ∀ g v, ρm g v = χ g • v) (ht : ∀ g v, ρt g v =
 
 theorem mulB_mem_Dpst (hm : ∀ g v, ρm g v = χ g • v) (ht : ∀ g v, ρt g v = χ g • ρs g v)
     {x : V ⊗[ℚ_[l]] Bst P} {y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P} (hx : x ∈ Dpst P ρs) (hy : y ∈ Dpst P ρm) :
-    mulB P V y x ∈ Dpst P ρt := by
+    mulB (L := L) P V y x ∈ Dpst P ρt := by
   obtain ⟨K₁, h₁⟩ := (mem_Dpst P ρs).mp hx
   obtain ⟨K₂, h₂⟩ := (mem_Dpst P ρm).mp hy
   refine (mem_Dpst P ρt).mpr ⟨supExt K₁ K₂, fun g hg => ?_⟩
@@ -336,7 +336,7 @@ variable (P)
 set_option synthInstance.maxHeartbeats 100000 in
 def dmul (hm : ∀ g v, ρm g v = χ g • v) (ht : ∀ g v, ρt g v = χ g • ρs g v) :
     ↥(Dpst P ρs) →ₗ[↥L.1] ↥(Dpst P ρm) →ₗ[↥L.1] ↥(Dpst P ρt) :=
-  LinearMap.mk₂ ↥L.1 (fun x y => ⟨mulB P V y.1 x.1, mulB_mem_Dpst ρs ρt ρm χ hm ht x.2 y.2⟩)
+  LinearMap.mk₂ ↥L.1 (fun x y => ⟨mulB (L := L) P V y.1 x.1, mulB_mem_Dpst ρs ρt ρm χ hm ht x.2 y.2⟩)
     (fun x x' y => Subtype.ext (by simp))
     (fun a x y => Subtype.ext (by simp [mulB_smul]))
     (fun x y y' => Subtype.ext (by simp))
@@ -345,7 +345,7 @@ def dmul (hm : ∀ g v, ρm g v = χ g • v) (ht : ∀ g v, ρt g v = χ g • 
 variable (hm : ∀ g v, ρm g v = χ g • v) (ht : ∀ g v, ρt g v = χ g • ρs g v)
 
 @[simp] theorem coe_dmul (x : ↥(Dpst P ρs)) (y : ↥(Dpst P ρm)) :
-    (dmul P ρs ρt ρm χ hm ht x y : V ⊗[ℚ_[l]] Bst P) = mulB P V y.1 x.1 := rfl
+    (dmul P ρs ρt ρm χ hm ht x y : V ⊗[ℚ_[l]] Bst P) = mulB (L := L) P V y.1 x.1 := rfl
 
 theorem dmul_mulD_left (c : ↥(MaximalUnramifiedExtension l)) (x : ↥(Dpst P ρs)) (y : ↥(Dpst P ρm)) :
     dmul P ρs ρt ρm χ hm ht (mulD P ρs c x) y = mulD P ρt c (dmul P ρs ρt ρm χ hm ht x y) :=
