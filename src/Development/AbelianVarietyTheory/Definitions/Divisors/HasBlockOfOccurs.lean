@@ -190,10 +190,10 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] {l : 
 def CrysWith [IsAlgClosure E Ω] {n : ℕ} (r : G E Ω →* GL (Fin n) (Qbar l)) (J : (E →+* Qbar l) → Multiset ℤ) : Prop :=
   Continuous r ∧ ∀ (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) →
     ∀ (w : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω), IsPlaceOver A w →
-    ∀ (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω (Dec (F := E) A) O), GlobalTheory.Pst.Induces Bw →
-      IsCrysAt P Bw (r.comp (Dec (F := E) A).subtype) ∧
+    ∀ (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω (ReciprocityTheory.Gal.Dec (F := E) A) O), GlobalTheory.Pst.Induces Bw →
+      IsCrysAt P Bw (r.comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype) ∧
       ∀ (τ : E →+* Qbar l) (LL' : FinExt l) (τ' : ↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥LL'.1), IsInduced Bw τ τ' →
-        IsJumpsAt P Bw (r.comp (Dec (F := E) A).subtype) τ (J τ)
+        IsJumpsAt P Bw (r.comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype) τ (J τ)
 
 
 variable (E Ω l) in
