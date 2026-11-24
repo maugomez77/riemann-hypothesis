@@ -224,13 +224,13 @@ def mulB : ((Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) →ₗ[ℚ_[l]] End ℚ_[l] (
     (LinearMap.mul ℚ_[l] (Bst P)))
 
 @[simp] theorem mulB_tmul (v' : Fin 1 → ↥L.1) (b' : Bst P) (v : V) (b : Bst P) :
-    mulB P V (v' ⊗ₜ b') (v ⊗ₜ b) = (v' 0 • v) ⊗ₜ (b' * b) := by
+    mulB (L := L) P V (v' ⊗ₜ b') (v ⊗ₜ b) = (v' 0 • v) ⊗ₜ (b' * b) := by
   simp [mulB, smulEnd]
 
 variable {P V}
 
 theorem mulB_smul (a : ↥L.1) (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) (x : V ⊗[ℚ_[l]] Bst P) :
-    mulB P V y (a • x) = a • mulB P V y x := by
+    mulB (L := L) P V y (a • x) = a • mulB (L := L) P V y x := by
   induction y using TensorProduct.induction_on with
   | zero => simp
   | tmul v' b' =>
@@ -242,7 +242,7 @@ theorem mulB_smul (a : ↥L.1) (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) (x : 
   | add y y' hy hy' => simp only [map_add (f := _), LinearMap.add_apply, smul_add, hy, hy'] <;> abel
 
 theorem mulB_smul_left (a : ↥L.1) (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) (x : V ⊗[ℚ_[l]] Bst P) :
-    mulB P V (a • y) x = a • mulB P V y x := by
+    mulB (L := L) P V (a • y) x = a • mulB (L := L) P V y x := by
   induction y using TensorProduct.induction_on with
   | zero => simp
   | tmul v' b' =>
@@ -254,7 +254,7 @@ theorem mulB_smul_left (a : ↥L.1) (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) 
   | add y y' hy hy' => simp only [map_add (f := _), LinearMap.add_apply, smul_add, hy, hy'] <;> abel
 
 theorem mulB_mulV (c : ↥(MaximalUnramifiedExtension l)) (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) (x : V ⊗[ℚ_[l]] Bst P) :
-    mulB P V y (mulV P ↥L.1 V c x) = mulV P ↥L.1 V c (mulB P V y x) := by
+    mulB (L := L) P V y (mulV P ↥L.1 V c x) = mulV P ↥L.1 V c (mulB (L := L) P V y x) := by
   induction y using TensorProduct.induction_on with
   | zero => simp
   | tmul v' b' =>
