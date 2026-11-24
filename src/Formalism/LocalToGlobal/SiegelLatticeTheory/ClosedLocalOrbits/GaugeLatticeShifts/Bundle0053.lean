@@ -47,7 +47,7 @@ theorem mf_gA {D : D7} (X : HidaSetting D) {Y : Matrix (Kap X) (Kap X) X.B.I.E} 
   have h1 : (Bm' X).map (ic X) * (Bm X).map (ic X) = 1 := by
     rw [← Matrix.map_mul, Bm'_mul_Bm, Matrix.map_one _ (map_zero _) (map_one _)]
   unfold Mf Bf Bf'
-  rw [hf, _root_.Formalism.MainNotions.S.gE, Matrix.map_mul, Matrix.map_mul, cay_map]
+  rw [hf, gE, Matrix.map_mul, Matrix.map_mul, cay_map]
   simp only [← Matrix.mul_assoc]
   rw [h1, Matrix.one_mul, Matrix.mul_assoc, h1, Matrix.mul_one]
 
