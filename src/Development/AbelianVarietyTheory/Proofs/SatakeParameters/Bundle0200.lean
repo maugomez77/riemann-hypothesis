@@ -241,6 +241,7 @@ theorem mulB_smul (a : ↥L.1) (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) (x : 
     | add x x' hx hx' => simp only [map_add (f := _), LinearMap.add_apply, smul_add, hx, hx'] <;> abel
   | add y y' hy hy' => simp only [map_add (f := _), LinearMap.add_apply, smul_add, hy, hy'] <;> abel
 
+set_option synthInstance.maxHeartbeats 100000 in
 theorem mulB_smul_left (a : ↥L.1) (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) (x : V ⊗[ℚ_[l]] Bst P) :
     mulB (L := L) P V (a • y) x = a • mulB (L := L) P V y x := by
   induction y using TensorProduct.induction_on with
